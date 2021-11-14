@@ -26,7 +26,10 @@ router.get('/login', async (req, res) => {
         if(!validPassword) {
             return res.json({message: 'incorrect username or password'});
         }
-
+        await User.updateOne({username: username},{$set: {isOnline: true}}),()=>{
+            console.log('online')
+        };
+        // await account.save();
         res.json({message: 'success', account: account})
     }
     catch(err){
@@ -34,6 +37,24 @@ router.get('/login', async (req, res) => {
         res.json({message: 'server error'});
     }
 });
+
+router.post('/logout',async (req,res)=>{
+    const { username } = req.query;
+    try{
+        let account = await User.findOneAndUpdate({username: username},{$set: {isOnline: false}});
+
+        if(!account){
+            return res.json({message: 'incorrect username or password'});
+        }
+        
+        res.json({message: 'success'})
+    }
+    catch(err){
+        console.error(err);
+        res.json({message: 'server error'});
+    }
+
+})
 
 
 // /users/register

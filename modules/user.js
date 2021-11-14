@@ -20,7 +20,10 @@ const userSchema = new mongoose.Schema({
         maxlength: 255,
         required: true
     },
-    inbox:[ String ]
+    isOnline: {
+        type: Boolean,
+        default: false
+    }
 });
 
 export default mongoose.model('User', userSchema);
